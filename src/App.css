@@ -1,0 +1,261 @@
+.App {
+  text-align: center;
+}
+
+.App{
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  text-align: center;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.app-container {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+.menu-nav {
+  background-color: #282c34;
+  justify-content: center;
+  align-items: center;
+  padding: 0 60px;
+  display: flex;
+}
+
+.menu-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.menu-nav li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu-nav li a:hover {
+  text-decoration: underline;
+}
+
+.vehiculo{
+  margin-top:0px;
+}
+
+.login-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #282c34; /* Azul Tailwind (blue-600) */
+  color: white;
+  padding: 7px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  
+}
+
+.login-button:hover {
+  background-color: #282c34; /* Azul más oscuro (blue-700) */
+}
+
+.iconl {
+  width: 30px;
+  height: 30px;
+  margin-top: -13px;
+  margin-right: -1120px;
+}
+.fondo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  padding: 50px;
+  min-height: 100vh;    /* Asegura que el fondo ocupe toda la altura de la pantalla */
+}
+  .contenedores {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: center;  /* Centra los contenedores horizontalmente */
+    align-items: flex-start;  /* Alinea los contenedores en la parte superior */
+  }
+  .contenedor {
+    flex: 1;
+    min-width: 480px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 14px 18px rgba(0, 0, 0, 0.1);
+    /* margin-top: 20px; Elimínalo si está empujando los contenedores hacia abajo */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+
+.contenedor:hover {
+  transform: translateY(-5px); /* Añade un pequeño "hover effect" */
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: linear-gradient(to right, #ece9e6, #ffffff);
+}
+
+.login-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.login-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-group label {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.login-input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+.registro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+}
+
+.registro-form {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.registro-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.registro-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.registro-group label {
+  margin-bottom: 0.5rem;
+  color: #444;
+  font-weight: 600;
+}
+
+.registro-input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.registro-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.registro-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.registro-btn:hover {
+  background-color: #218838;
+}
+
+.info-window {
+  padding: 10px;
+  max-width: 200px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.info-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.info-estado {
+  margin: 5px 0 0;
+  font-size: 14px;
+}

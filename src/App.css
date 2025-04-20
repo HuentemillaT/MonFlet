@@ -3,7 +3,7 @@
 }
 
 .App{
-  background-color: #282c34;
+  background-color: #12437c;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
   font-family: Arial, sans-serif;
 }
 .menu-nav {
-  background-color: #282c34;
+  background-color: #12437c;
   justify-content: center;
   align-items: center;
   padding: 0 60px;
@@ -56,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #282c34; /* Azul Tailwind (blue-600) */
+  background-color: #12437c; /* Azul Tailwind (blue-600) */
   color: white;
   padding: 7px;
   border: none;
@@ -67,7 +67,7 @@
 }
 
 .login-button:hover {
-  background-color: #282c34; /* Azul más oscuro (blue-700) */
+  background-color: #12437c; /* Azul más oscuro (blue-700) */
 }
 
 .iconl {
@@ -76,6 +76,21 @@
   margin-top: -13px;
   margin-right: -1120px;
 }
+
+.logo-container {
+  text-align: center;  
+  background-color: transparent;
+}
+
+.icon-logo {
+  width: 140px;
+  height: auto;
+  background-color: transparent;
+  margin-left: -600px;
+}
+
+
+
 .fondo {
   display: flex;
   justify-content: center;
@@ -100,14 +115,39 @@
     border-radius: 10px;
     text-align: center;
     box-shadow: 0px 14px 18px rgba(0, 0, 0, 0.1);
-    /* margin-top: 20px; Elimínalo si está empujando los contenedores hacia abajo */
+    margin-top: -400px; 
     transition: transform 0.3s ease-in-out;
   }
-  
-
 .contenedor:hover {
   transform: translateY(-5px); /* Añade un pequeño "hover effect" */
 }
+
+.toast-flotante {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #38a169;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  font-weight: 500;
+  animation: aparecer 0.3s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 
 .login-container {
   display: flex;

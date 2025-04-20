@@ -3,7 +3,7 @@
 }
 
 .App{
-  background-color: #282c34;
+  background-color: #12437c;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
   font-family: Arial, sans-serif;
 }
 .menu-nav {
-  background-color: #282c34;
+  background-color: #12437c;
   justify-content: center;
   align-items: center;
   padding: 0 60px;
@@ -56,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #282c34; /* Azul Tailwind (blue-600) */
+  background-color: #12437c; /* Azul Tailwind (blue-600) */
   color: white;
   padding: 7px;
   border: none;
@@ -67,7 +67,7 @@
 }
 
 .login-button:hover {
-  background-color: #282c34; /* Azul más oscuro (blue-700) */
+  background-color: #12437c; /* Azul más oscuro (blue-700) */
 }
 
 .iconl {
@@ -76,6 +76,21 @@
   margin-top: -13px;
   margin-right: -1120px;
 }
+
+.logo-container {
+  text-align: center;  
+  background-color: transparent;
+}
+
+.icon-logo {
+  width: 140px;
+  height: auto;
+  background-color: transparent;
+  margin-left: -600px;
+}
+
+
+
 .fondo {
   display: flex;
   justify-content: center;
@@ -87,7 +102,7 @@
   .contenedores {
     display: flex;
     gap: 20px;
-    padding: 20px;
+    padding: 5px;
     flex-wrap: wrap;
     justify-content: center;  /* Centra los contenedores horizontalmente */
     align-items: flex-start;  /* Alinea los contenedores en la parte superior */
@@ -100,7 +115,7 @@
     border-radius: 10px;
     text-align: center;
     box-shadow: 0px 14px 18px rgba(0, 0, 0, 0.1);
-    /* margin-top: 20px; Elimínalo si está empujando los contenedores hacia abajo */
+    margin-top: -400px; 
     transition: transform 0.3s ease-in-out;
   }
   

@@ -27,9 +27,9 @@ function Documentos() {
 
   return (
     <div className='fondo'> 
-      <div className="contenedores flex gap-4 p-4">
+      <div className="contenedores">
       {/* Contenedor 1 */}
-      <div className="contenedor flex-1 bg-white rounded shadow p-4 text-center">
+      <div className="contenedor">
         <h3 className="text-lg font-semibold">Merma cliente</h3>
         <input
           type="file"

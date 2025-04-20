@@ -11,10 +11,13 @@ function MenuNavegacion({ isAuthenticated, handleLogout }) {
 
   return (
     <nav className="menu-nav">
+      <div className="logo-container">
+        <img src="/icons/logo1_1.png" className="icon-logo" alt="Logo empresa" />
+      </div>
       <ul>
         <li><Link to="/dashboard/inicio">Inicio</Link></li>
-        <li><Link to="/dashboard/mapa">Mapa</Link></li>
-        <li><Link to="/dashboard/vehiculos">Vehículos</Link></li>
+        <li><Link to="/dashboard/mapa">Mapa Clientes</Link></li>
+        <li><Link to="/dashboard/vehiculos">Mapa Vehículos</Link></li>
         <li><Link to="/dashboard/documento">Documentos</Link></li>
         <li><Link to="/dashboard/perfil">Perfil</Link></li>
         <li><Link to="/dashboard/registro">Registro</Link></li>

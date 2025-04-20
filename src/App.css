@@ -102,7 +102,7 @@
   .contenedores {
     display: flex;
     gap: 20px;
-    padding: 20px;
+    padding: 5px;
     flex-wrap: wrap;
     justify-content: center;  /* Centra los contenedores horizontalmente */
     align-items: flex-start;  /* Alinea los contenedores en la parte superior */

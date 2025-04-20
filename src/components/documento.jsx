@@ -51,10 +51,35 @@ function Documentos() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="fondo">
       {mostrarToast && (
         <div className="toast-flotante">
           {mensaje}
+=======
+    <div className='fondo'> 
+      <div className="contenedores">
+      {/* Contenedor 1 */}
+      <div className="contenedor">
+        <h3 className="text-lg font-semibold">Merma cliente</h3>
+        <input
+          type="file"
+          multiple
+          onChange={(e) => handleUpload(e, 'merma')}
+          className="border p-2"
+        />
+        <div>
+          <h4>Documentos cargados:</h4>
+          <ul>
+            {documentosMerma.map((doc, index) => (
+              <li key={index}>
+                <a href={doc.url} download={doc.nombre}>
+                  {doc.nombre}
+                </a>
+              </li>
+            ))}
+          </ul>
+>>>>>>> origin/main
         </div>
       )}
 

@@ -11,12 +11,12 @@ const center = {
   lng: -72.59842,
 };
 
-function MapaNavegacion() {
+function MapaNavegacionCliente() {
   const [clientes, setClientes] = useState([]);
   const [clienteActivo, setClienteActivo] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyCcF0vvhLLmuLAJcnh2ElM9aLcIwtiiwMo',
   });
 
@@ -44,10 +44,11 @@ function MapaNavegacion() {
     setTimeoutId(id);
   };
 
+  if (loadError) return <div>Error al cargar el mapa. Intenta de nuevo más tarde.</div>;
   if (!isLoaded) return <div>Cargando mapa...</div>;
 
   return (
-    <div className='vehiculo'>
+    <div className="vehiculo">
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={14}>
         {clientes.map((cliente) => (
           <Marker
@@ -55,7 +56,7 @@ function MapaNavegacion() {
             position={{ lat: cliente.lat, lng: cliente.lng }}
             label={{ text: cliente.nombre, fontWeight: 'bold' }}
             icon={{
-              url: '/icons/cliente.png', // 🧷 asegúrate de tener este ícono en public/icons/
+              url: '/icons/cliente.png', // Asegúrate de que este ícono esté en la carpeta correcta
               scaledSize: new window.google.maps.Size(40, 40),
               labelOrigin: new window.google.maps.Point(20, -10),
             }}
@@ -70,9 +71,9 @@ function MapaNavegacion() {
             onCloseClick={() => setClienteActivo(null)}
             options={{ disableAutoPan: true }}
           >
-            <div className="info-window">
-              <h4 className="info-tittle">{clienteActivo.nombre}</h4>
-              <p className="info-estado">Dirección: {clienteActivo.direccion}</p>
+            <div className="info-window" role="dialog" aria-labelledby="cliente-info-title" aria-describedby="cliente-info-description">
+              <h4 id="cliente-info-title" className="info-tittle">{clienteActivo.nombre}</h4>
+              <p id="cliente-info-description" className="info-estado">Dirección: {clienteActivo.direccion}</p>
             </div>
           </InfoWindow>
         )}
@@ -81,4 +82,4 @@ function MapaNavegacion() {
   );
 }
 
-export default MapaNavegacion;
+export default MapaNavegacionCliente;

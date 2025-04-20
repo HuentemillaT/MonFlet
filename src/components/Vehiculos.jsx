@@ -15,7 +15,7 @@ const Vehiculos = () => {
       { id: 1, lat: -38.73965, lng: -72.58948, nombre: 'Patente 1', conductor:'Alfonso Martinez', estado: 'En ruta'},
       { id: 2, lat: -38.73559, lng: -72.59386, nombre: 'Patente 2' , conductor:'Josefa Alvarez', estado:'En mantención'},
       { id: 3, lat: -38.7388, lng: -72.5995, nombre: 'Patente 3', conductor:'Emilio Aravena' , estado:'Disponible'},
-      { id: 3, lat: -38.73285, lng: -72.61691, nombre: 'Patente 4', conductor:'Jose Soto' , estado:'Disponible'},
+      { id: 4, lat: -38.73285, lng: -72.61691, nombre: 'Patente 4', conductor:'Jose Soto' , estado:'Disponible'},
     ];
     setVehiculos(vehiculosEnTiempoReal);
   }, []);

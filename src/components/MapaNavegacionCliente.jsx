@@ -11,7 +11,7 @@ const center = {
   lng: -72.59842,
 };
 
-function MapaNavegacion() {
+function MapaNavegacionCliente() {
   const [clientes, setClientes] = useState([]);
   const [clienteActivo, setClienteActivo] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
@@ -81,4 +81,4 @@ function MapaNavegacion() {
   );
 }
 
-export default MapaNavegacion;
+export default MapaNavegacionCliente;

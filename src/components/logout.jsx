@@ -1,26 +1,24 @@
-import React from 'react';
+// components/Logout.jsx
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Logout() {
+function Logout({ setIsAuthenticated }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Aquí borrarías los datos del usuario, token, etc.
-    localStorage.removeItem('authToken'); // Ejemplo
-    sessionStorage.clear(); // Si usas sessionStorage
+  useEffect(() => {
+    // Limpiar toda la información relacionada a la sesión
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
 
-    // Redirigir al login
-    navigate('/login');
-  };
+    // Actualizar el estado global de autenticación
+    setIsAuthenticated(false);
 
-  return (
-    <button
-      onClick={handleLogout}
-      className="bg-red-600 text-white px-4 py-2 rounded"
-    >
-      Cerrar sesión
-    </button>
-  );
+    // Redirigir al inicio
+    navigate('/dashboard/inicio');
+  }, [navigate, setIsAuthenticated]);
+
+  return null; // No renderiza nada visible
 }
 
 export default Logout;

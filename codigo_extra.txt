@@ -1,0 +1,16 @@
+https://chatgpt.com/share/680c63fd-ef68-8003-bc5c-c5a420a19842
+
+
+
+----------------------------------
+Diferenciar a conductores por el correo 
+* @conductorR.cl     -> mapa inicio ruta (trayecto), documentos, obtencion datos vehiculos(mantenciones)
+  @conductorAV.cl   -> mapa clientes x sector , documentos, obtencion datos vehiculos(mantenciones)
+  @adminlog.cl     -> mapa navegacion clientes, vehiculos, documentos(otro formato), estado vehiculos(proximas mantenciones)
+
+
+--------------------
+Pantalla inicial 
+*Home
+*Suscripcion empresas
+*Contacto

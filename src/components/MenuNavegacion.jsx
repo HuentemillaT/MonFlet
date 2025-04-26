@@ -16,12 +16,35 @@ function MenuNavegacion({ isAuthenticated, handleLogout }) {
       </div>
       <ul>
         <li><Link to="/dashboard/inicio">Inicio</Link></li>
-        <li><Link to="/dashboard/mapa">Mapa Clientes</Link></li>
-        <li><Link to="/dashboard/vehiculos">Mapa Vehículos</Link></li>
-        <li><Link to="/dashboard/documento">Documentos</Link></li>
-        <li><Link to="/dashboard/perfil">Perfil</Link></li>
-        <li><Link to="/dashboard/registro">Registro</Link></li>
+        <li><Link to="/dashboard/inicio"></Link></li>
         <li>
+          {isAuthenticated && (
+          <Link to="/dashboard/mantencion">Mantención Vehiculos</Link>)}
+          
+        </li>
+        <li>
+          {isAuthenticated && (
+          <Link to="/dashboard/mapa">Mapa Clientes</Link>)}
+          
+        </li>
+        <li>
+        {isAuthenticated && (
+          <Link to="/dashboard/vehiculos">Mapa Vehículos</Link>)}
+        </li>
+        <li>
+          {isAuthenticated && (
+          <Link to="/dashboard/documento">Documentos</Link>)}
+        </li>
+        <li>
+          {isAuthenticated && (
+          <Link to="/dashboard/perfil">Perfil</Link>)}
+        </li>
+        {/* Mostrar el enlace de Registro solo si no está autenticado */}
+        <li>
+           {!isAuthenticated && ( 
+          <Link to="/dashboard/registro">Registro</Link>)}
+        </li>
+        <li>  
           {isAuthenticated ? (
             <button onClick={handleLogout} className="login-button">
               <img src="/icons/logout.png" alt="Login" className="iconl" />

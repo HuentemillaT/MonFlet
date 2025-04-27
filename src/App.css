@@ -364,6 +364,7 @@ p {
   font-size: 14px;
 }
 
+<<<<<<< HEAD
 .perfil-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -416,6 +417,110 @@ input[readonly] {
   background-color: #e9ecef;
   cursor: not-allowed;
 }
+=======
+
+.perfil-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #12437c;
+}
+
+.perfil-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.perfil-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.perfil-input,
+.perfil-file {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+}
+
+.perfil-input:focus,
+.perfil-file:focus {
+  border-color: #12437c;
+  outline: none;
+}
+
+.perfil-btn {
+  background-color: #12437c;
+  color: white;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.perfil-btn:hover {
+  background-color: #0f3260;
+}
+
+.perfil-btn-chico {
+  background-color: #12437c;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  height: fit-content;
+  align-self: flex-end;
+  margin-left: 1rem;
+  margin-top: auto;
+  transition: background-color 0.3s ease;
+}
+
+.perfil-btn-chico:hover {
+  background-color: #0f3260;
+}
+
+.perfil-group-horizontal {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.perfil-password-display {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.archivo-subido {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.3rem;
+}
+
+
+
+>>>>>>> origin/developer
 .alerta-flotante {
   position: fixed;
   top: 20px;
@@ -445,6 +550,7 @@ input[readonly] {
     pointer-events: none;
   }
 }
+<<<<<<< HEAD
 
 
 /* src/components/ProximasMantenciones.css */
@@ -803,3 +909,5 @@ input[type="text"] {
 .inicio .footer .social-media a:hover {
   text-decoration: underline;
 }
+=======
+>>>>>>> origin/developer

@@ -31,12 +31,20 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+<<<<<<< HEAD
   const [accesoRestringido, setAccesoRestringido] = useState(false);
   const [emailError, setEmailError] = useState('');
+=======
+  const [accesoRestringido,setAccesoRestringido] = useState(false);
+>>>>>>> origin/developer
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/developer
     if (token) {
       setAccesoRestringido(true);
       setIsAuthenticated(true);
@@ -51,7 +59,23 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
       return;
     }
 
+<<<<<<< HEAD
     const emailFormateado = email.trim().toLowerCase();
+=======
+    // Verificar si ya existe un usuario con el mismo correo
+    const usuarioExistente = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+    if (usuarioExistente && usuarioExistente.email === email) {
+      alert('Este correo ya está registrado');
+      return;
+    }
+
+    // Aquí podrías hacer una petición a tu API para registrar
+    const nuevoUsuario = {
+      nombre,
+      email,
+      password, 
+    };
+>>>>>>> origin/developer
 
     if (!emailFormateado.endsWith('@conductord.cl') && !emailFormateado.endsWith('@conductorav.cl') && !emailFormateado.endsWith('@adminlog.cl')) {
       setEmailError('El correo debe pertenecer a uno de los siguientes dominios: @conductord.cl, @conductorav.cl, @adminlog.cl');
@@ -73,9 +97,15 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
     users.push(nuevoUsuario);
     localStorage.setItem('users', JSON.stringify(users));
     localStorage.setItem('usuarioRegistrado', JSON.stringify(nuevoUsuario));
+<<<<<<< HEAD
     localStorage.setItem('userEmail', nuevoUsuario.email); // guardar email
     localStorage.setItem('userName', nuevoUsuario.nombre); // opcional guardar nombre
     localStorage.setItem('authToken', 'fake-token'); // ✅ Crear token falso para marcar autenticado
+=======
+    localStorage.setItem('authToken', 'fake-token');  // Simula un token de autenticación
+    localStorage.setItem('userName', nombre);
+    localStorage.setItem('userEmail', email);
+>>>>>>> origin/developer
 
     setIsAuthenticated(true); // ✅ Actualizar estado global de autenticación
     setUserEmail(nuevoUsuario.email); // ✅ Actualizar email en estado global
@@ -84,7 +114,11 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
     navigate('/dashboard/perfil');
   };
 
+<<<<<<< HEAD
   if (accesoRestringido) {
+=======
+  if (accesoRestringido ) {
+>>>>>>> origin/developer
     return (
       <div style={{ textAlign: 'center', marginTop: '2rem' }}>
         <h3>Ya tienes una sesión activa o estás registrado.</h3>

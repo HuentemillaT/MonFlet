@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 
 // Función simulada para obtener los datos de próximas mantenciones (puedes reemplazarla con una API real)
@@ -81,3 +82,16 @@ const ProximasMantenciones = () => {
 };
 
 export default ProximasMantenciones;
+=======
+import React from 'react';
+
+function Inicio() {
+  return (
+    <div className='fondo'>
+      <h1>Bienvenido a </h1>
+    </div>
+  );
+}
+
+export default Inicio;
+>>>>>>> origin/developer

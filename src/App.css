@@ -186,6 +186,15 @@ p {
   transform: translateY(-5px); /* Añade un pequeño "hover effect" */
 }
 
+/* Media Query para pantallas aún más pequeñas, como teléfonos móviles */
+@media (max-width: 480px) {
+  .contenedor {
+    min-width: 100%;  /* Asegura que los contenedores ocupen todo el ancho de la pantalla */
+  }
+  .contenedores {
+    padding: 10px; /* Reducir el padding para pantallas pequeñas */
+  }
+}
 .toast-flotante {
   position: fixed;
   top: 20px;

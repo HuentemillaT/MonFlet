@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 function Documentos() {
   const [documentosMerma, setDocumentosMerma] = useState([]);
@@ -12,6 +12,24 @@ function Documentos() {
   const inputMermaRef = useRef(null);
   const inputFacturasRef = useRef(null);
   const inputCerradasRef = useRef(null);
+
+  useEffect(() => {
+    // Recuperar documentos previos desde el almacenamiento local
+    const documentosGuardadosMerma = JSON.parse(localStorage.getItem('documentosMerma')) || [];
+    const documentosGuardadosFacturas = JSON.parse(localStorage.getItem('documentosFacturas')) || [];
+    const documentosGuardadosCerradas = JSON.parse(localStorage.getItem('documentosCerradas')) || [];
+
+    setDocumentosMerma(documentosGuardadosMerma);
+    setDocumentosFacturas(documentosGuardadosFacturas);
+    setDocumentosCerradas(documentosGuardadosCerradas);
+  }, []);
+
+  useEffect(() => {
+    // Guardar documentos en el almacenamiento local cada vez que cambien
+    localStorage.setItem('documentosMerma', JSON.stringify(documentosMerma));
+    localStorage.setItem('documentosFacturas', JSON.stringify(documentosFacturas));
+    localStorage.setItem('documentosCerradas', JSON.stringify(documentosCerradas));
+  }, [documentosMerma, documentosFacturas, documentosCerradas]);
 
   const handleUpload = (e, tipo) => {
     const archivos = Array.from(e.target.files);
@@ -51,41 +69,10 @@ function Documentos() {
   };
 
   return (
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/main
     <div className="fondo">
       {mostrarToast && (
         <div className="toast-flotante">
           {mensaje}
-<<<<<<< HEAD
-=======
-=======
-    <div className='fondo'> 
-      <div className="contenedores">
-      {/* Contenedor 1 */}
-      <div className="contenedor">
-        <h3 className="text-lg font-semibold">Merma cliente</h3>
-        <input
-          type="file"
-          multiple
-          onChange={(e) => handleUpload(e, 'merma')}
-          className="border p-2"
-        />
-        <div>
-          <h4>Documentos cargados:</h4>
-          <ul>
-            {documentosMerma.map((doc, index) => (
-              <li key={index}>
-                <a href={doc.url} download={doc.nombre}>
-                  {doc.nombre}
-                </a>
-              </li>
-            ))}
-          </ul>
->>>>>>> origin/main
->>>>>>> origin/main
         </div>
       )}
 

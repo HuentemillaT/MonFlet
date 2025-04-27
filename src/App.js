@@ -74,6 +74,10 @@ function App() {
         
         {/* Ruta de Logout */}
         <Route path="/dashboard/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
+
+        {/* Redirigir a la página de inicio si no hay coincidencia de ruta */}
+        <Route path="*" element={<Navigate to="/dashboard/inicio" />} />
+
       </Routes>
     </Router>
   );

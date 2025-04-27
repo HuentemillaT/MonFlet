@@ -16,7 +16,7 @@ import Logout from './components/logout';
 import MantencionVehiculos from './components/mantencion'; 
 
 function App() {
-<<<<<<< HEAD
+
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
   const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') || '');
 
@@ -45,11 +45,7 @@ function App() {
 
   return (
     <Router>
-      <MenuNavegacion 
-        isAuthenticated={isAuthenticated} 
-        handleLogout={handleLogout} 
-        userEmail={userEmail} 
-      />
+      <MenuNavegacion isAuthenticated={isAuthenticated} handleLogout={handleLogout} userEmail={userEmail} />
       <Routes>
         {/* Rutas públicas */}
         <Route path="/dashboard/inicio" element={<Inicio />} />
@@ -77,41 +73,6 @@ function App() {
         <Route path="/dashboard/documento" element={userEmail ? (userEmail.includes('conductord.cl') || userEmail.includes('conductorav.cl') ? <Doc /> : <Navigate to="/dashboard/inicio" />) : <Navigate to="/dashboard/login" />} />
         
         {/* Ruta de Logout */}
-=======
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('usuarioRegistrado');
-    setIsAuthenticated(false);
-
-    window.location.href = '/dashboard/inicio';  //redirige a la pantalla inicio
-  };
-
-  return (
-    <Router>
-      <MenuNavegacion isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-      <Routes>
-        <Route path="/dashboard/mantencion" element={<MantencionVehiculos />} />
-        <Route path="/dashboard/mapa" element={<MapaNavegacionCliente setIsAuthenticated={setIsAuthenticated}/>} />
-        <Route path="/dashboard/vehiculos" element={<Vehiculos setIsAuthenticated={setIsAuthenticated}/>} />
-        <Route path="/dashboard/documento" element={<Doc />} />
-        <Route path="/dashboard/perfil" element={<Perfil />} />
-        <Route path="/dashboard/inicio" element={<Inicio />} />
-        <Route path="/dashboard/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/dashboard/registro" element={<Registro setIsAuthenticated={setIsAuthenticated} />} /> 
->>>>>>> origin/developer
         <Route path="/dashboard/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
       </Routes>
     </Router>

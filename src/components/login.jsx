@@ -8,17 +8,12 @@ function Login({ setIsAuthenticated , setUserEmail}) {
 
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  // Verificar si ya hay un token de autenticación
-=======
      // Verificar si ya hay un token de autenticación
->>>>>>> origin/developer
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
       setIsAuthenticated(true); 
       setMostrarCuadro(true);
-<<<<<<< HEAD
       navigate('/dashboard/perfil'); // Redirige al perfil si ya está autenticado
     }
   }, [setIsAuthenticated, navigate]);
@@ -42,35 +37,7 @@ function Login({ setIsAuthenticated , setUserEmail}) {
   
       setIsAuthenticated(true);
       setUserEmail(usuario.email); // 🔥 Esto es importante
-=======
-      const timer = setTimeout(() => {
-        setMostrarCuadro(false);
-      }, 4000); // Desaparece en 4 segundos
-      return () => clearTimeout(timer);
-    }
-  }, [setIsAuthenticated]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioRegistrado'));
-
-    if (!usuarioGuardado) {
-      alert('No hay usuario registrado');
-      return;
-    }
-
-    if (
-      usuarioGuardado.email === email &&
-      usuarioGuardado.password === password
-    ) {
-      localStorage.setItem('authToken', 'fake-token');
-      localStorage.setItem('userName', usuarioGuardado.nombre);
-      localStorage.setItem('userEmail', usuarioGuardado.email);
-
-
-      setIsAuthenticated(true);
->>>>>>> origin/developer
       navigate('/dashboard/perfil');
     } else {
       alert('Credenciales incorrectas');

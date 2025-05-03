@@ -9,7 +9,6 @@ function Perfil() {
   const [confirmarPassword, setConfirmarPassword] = useState('');
   const [modoEdicion, setModoEdicion] = useState(false);
   const [modoEdicionPassword, setModoEdicionPassword] = useState(false);
-  const [mensaje, setMensaje] = useState('');
 
   // Datos adicionales del perfil
   const [patente, setPatente] = useState('');
@@ -43,7 +42,7 @@ function Perfil() {
     const usuarioIndex = users.findIndex(u => u.email === userEmail);
 
     if (usuarioIndex === -1) {
-      setMensaje('Usuario no encontrado');
+      alert('Usuario no encontrado');
       return;
     }
 
@@ -51,7 +50,7 @@ function Perfil() {
       modoEdicionPassword &&
       (passwordActual !== password || nuevoPassword !== confirmarPassword)
     ) {
-      setMensaje('Verifica que la contraseña actual sea correcta y que las nuevas coincidan.');
+      alert('Verifica que la contraseña actual sea correcta y que las nuevas coincidan.');
       return;
     }
 
@@ -63,11 +62,11 @@ function Perfil() {
     };
 
     localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('userNombre', nombre);
+    localStorage.setItem('userName', nombre);
     localStorage.setItem('userRut', rut);
     localStorage.setItem('userEmail', email);
 
-    setMensaje('Datos de ingreso actualizados correctamente.');
+    alert('Datos de ingreso actualizados correctamente.');
     setModoEdicion(false);
     setModoEdicionPassword(false);
   };
@@ -78,12 +77,7 @@ function Perfil() {
     const usuarioIndex = users.findIndex(u => u.email === userEmail);
 
     if (usuarioIndex === -1) {
-      setMensaje('Usuario no encontrado');
-      return;
-    }
-
-    if (!patente || !direccion || !fechaNacimiento || !afp || !previsionSalud) {
-      setMensaje('Por favor, complete todos los campos del perfil personal.');
+      alert('Usuario no encontrado');
       return;
     }
 
@@ -98,7 +92,7 @@ function Perfil() {
     };
 
     localStorage.setItem('users', JSON.stringify(users));
-    setMensaje('Perfil personal actualizado correctamente.');
+    alert('Perfil personal actualizado correctamente.');
   };
 
   return (
@@ -106,7 +100,6 @@ function Perfil() {
       {/* Sección 1: Datos de Ingreso */}
       <section className="seccion">
         <h2>Datos de Ingreso</h2>
-        {mensaje && <p>{mensaje}</p>}
 
         <div>
           <label htmlFor="nombre">Nombre:</label>
@@ -261,6 +254,7 @@ function Perfil() {
 
         <button onClick={handleGuardarPerfilPersonal}>Guardar Perfil Personal</button>
       </section>
+
     </div>
   );
 }

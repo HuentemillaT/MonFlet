@@ -19,7 +19,12 @@ function Login({ setIsAuthenticated, setUserEmail }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert('Por favor ingresa un correo válido');
+      return;
+    }
+  
     try {
       const response = await loginUsuario({ email, password }); // Usamos axios
 
@@ -38,11 +43,7 @@ function Login({ setIsAuthenticated, setUserEmail }) {
       alert(mensaje);
     }
   };
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    alert('Por favor ingresa un correo válido');
-    return;
-  }
-
+  
   return (
     <div className="login-container">
       {mostrarCuadro && (
@@ -81,6 +82,6 @@ function Login({ setIsAuthenticated, setUserEmail }) {
       </form>
     </div>
   );
-}
+} 
 
-export default Login;
+export default Login; 

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { crearUsuario } from '../services/userService';
 
 function formatearRut(rut) {
-  rut = rut.replace(/^0+/, ''); // Quitar ceros iniciales
-  rut = rut.replace(/\D/g, ''); // Quitar todo lo que no sea número
+  rut = rut.replace(/^0+/, ''); 
+  rut = rut.replace(/\D/g, ''); 
 
   if (rut.length > 1) {
     const cuerpo = rut.slice(0, -1);
@@ -65,14 +65,10 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
     }
 
     try {
-      const response = await crearUsuario({
-        nombre,
-        rut,
-        email: emailFormateado,
-        password
-      });
+      const response = await crearUsuario({ nombre, rut, email: emailFormateado, password });
+      const { token, user } = response;
 
-      const { token, user } = response.data;
+      console.log('Usuario registrado con éxito:', user);
 
       localStorage.setItem('authToken', token);
       localStorage.setItem('userEmail', user.email);
@@ -81,7 +77,7 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
       setUserEmail(user.email);
       navigate('/dashboard/perfil');
     } catch (err) {
-      console.error(err);
+      console.error('Error en el registro:', err);
       const mensaje = err.response?.data?.message || 'Error al registrar usuario';
       alert(mensaje);
     }
@@ -100,7 +96,6 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
     <div className="registro-container">
       <form onSubmit={handleSubmit} className="registro-form">
         <h2 className="registro-title">Registro de Usuario</h2>
-
         <div className="registro-group">
           <label>Nombre completo</label>
           <input
@@ -111,7 +106,6 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
             className="registro-input"
           />
         </div>
-
         <div className="registro-group">
           <label>RUT</label>
           <input
@@ -122,7 +116,6 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
             className="registro-input"
           />
         </div>
-
         <div className="registro-group">
           <label>Correo electrónico</label>
           <input
@@ -137,7 +130,6 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
           />
           {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
         </div>
-
         <div className="registro-group">
           <label>Contraseña</label>
           <input
@@ -148,7 +140,6 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
             className="registro-input"
           />
         </div>
-
         <div className="registro-group">
           <label>Confirmar contraseña</label>
           <input
@@ -159,8 +150,7 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
             className="registro-input"
           />
         </div>
-
-        <button type="submit" className="registro-btn">Registrarse</button>
+        <button type="submit" className="registro-button">Registrar</button>
       </form>
     </div>
   );

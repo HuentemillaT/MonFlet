@@ -1,32 +1,33 @@
+// api.js
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://localhost:5000', // Cambia esto según la URL de tu backend
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-export const signup = async (userData) => {
-  const response = await api.post('/signup', userData);
-  return response.data;
+// Función para crear un usuario (ahora se llama crearUsuario)
+export const crearUsuario = async (userData) => {
+  try {
+    const response = await api.post('/crearUsuario', userData);
+    console.log('Respuesta de registro:', response);
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message || 'Error desconocido';
+    console.error('Error en crearUsuario:', errorMessage);
+    throw new Error(errorMessage);
+  }
 };
 
+// Función para login
 export const login = async (credentials) => {
-  const response = await api.post('/login', credentials);
-  return response.data;
-};
-
-export const obtenerPerfil = async (token) => {
-  const response = await api.get('/perfil', {
-    headers: { Authorization: token },
-  });
-  return response.data;
-};
-
-export const actualizarPerfil = async (token, data) => {
-  const response = await api.put('/perfil', data, {
-    headers: { Authorization: token },
-  });
-  return response.data;
+  try {
+    const response = await api.post('/login', credentials);
+    return response.data;
+  } catch (error) {
+    console.error('Error en login:', error.response?.data?.message || error.message);
+    throw new Error(error.response?.data?.message || 'Error desconocido');
+  }
 };

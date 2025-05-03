@@ -21,7 +21,6 @@ function MenuNavegacion({ isAuthenticated, handleLogout, userEmail }) {
         </a></li>
       </div>
       <ul>
-<<<<<<< HEAD
         <li>
           <div className='litext'>
             <Link to="/dashboard/inicio">Inicio</Link>
@@ -94,37 +93,6 @@ function MenuNavegacion({ isAuthenticated, handleLogout, userEmail }) {
         )}
 
         {/* Muestra el botón de logout si está autenticado, de lo contrario muestra el login */}
-=======
-        <li><Link to="/dashboard/inicio">Inicio</Link></li>
-        <li><Link to="/dashboard/inicio"></Link></li>
-        <li>
-          {isAuthenticated && (
-          <Link to="/dashboard/mantencion">Mantención Vehiculos</Link>)}
-          
-        </li>
-        <li>
-          {isAuthenticated && (
-          <Link to="/dashboard/mapa">Mapa Clientes</Link>)}
-          
-        </li>
-        <li>
-        {isAuthenticated && (
-          <Link to="/dashboard/vehiculos">Mapa Vehículos</Link>)}
-        </li>
-        <li>
-          {isAuthenticated && (
-          <Link to="/dashboard/documento">Documentos</Link>)}
-        </li>
-        <li>
-          {isAuthenticated && (
-          <Link to="/dashboard/perfil">Perfil</Link>)}
-        </li>
-        {/* Mostrar el enlace de Registro solo si no está autenticado */}
-        <li>
-           {!isAuthenticated && ( 
-          <Link to="/dashboard/registro">Registro</Link>)}
-        </li>
->>>>>>> origin/developer
         <li>  
           {isAuthenticated ? (
             <button onClick={handleLogout} className="login-button" aria-label="Cerrar sesión">

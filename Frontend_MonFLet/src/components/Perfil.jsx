@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { obtenerPerfil } from '../services/userService'; // Importa la función
 
 function Perfil() {
   const [nombre, setNombre] = useState('');
@@ -16,36 +17,40 @@ function Perfil() {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [afp, setAfp] = useState('');
   const [previsionSalud, setPrevisionSalud] = useState('');
-  const [password, setPassword] = useState(''); // La contraseña en texto claro
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userEmail = localStorage.getItem('userEmail');
-    const usuario = users.find(u => u.email === userEmail);
-
-    if (usuario) {
-      setNombre(usuario.nombre);
-      setEmail(usuario.email);
-      setRut(usuario.rut || '');
-      setPatente(usuario.patente || '');
-      setDireccion(usuario.direccion || '');
-      setFechaNacimiento(usuario.fechaNacimiento || '');
-      setAfp(usuario.afp || '');
-      setPrevisionSalud(usuario.previsionSalud || '');
-      setPassword(usuario.password || ''); // Cargar la contraseña del usuario en texto claro
+    const token = localStorage.getItem('authToken');
+  
+    if (token) {
+      obtenerPerfil(token)  // Llama a la API para obtener el perfil usando el token
+        .then((res) => {
+          const usuario = res.user;
+          setNombre(usuario.nombre);
+          setEmail(usuario.email);
+          setRut(usuario.rut || '');
+          setPatente(usuario.patente || '');
+          setDireccion(usuario.direccion || '');
+          setFechaNacimiento(usuario.fechaNacimiento || '');
+          setAfp(usuario.afp || '');
+          setPrevisionSalud(usuario.previsionSalud || '');
+          setPassword('');  // No cargues la contraseña desde el backend por seguridad
+        })
+        .catch((err) => {
+          console.error('Error al obtener perfil:', err);
+          alert('Error al cargar perfil');
+        });
     }
   }, []);
 
-  const handleGuardarDatosIngreso = () => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userEmail = localStorage.getItem('userEmail');
-    const usuarioIndex = users.findIndex(u => u.email === userEmail);
-
-    if (usuarioIndex === -1) {
-      alert('Usuario no encontrado');
+  const handleGuardarDatosIngreso = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert('Token de autenticación no encontrado.');
       return;
     }
-
+  
+    // Validación de contraseñas (si estás editando la contraseña)
     if (
       modoEdicionPassword &&
       (passwordActual !== password || nuevoPassword !== confirmarPassword)
@@ -53,46 +58,85 @@ function Perfil() {
       alert('Verifica que la contraseña actual sea correcta y que las nuevas coincidan.');
       return;
     }
-
-    users[usuarioIndex] = {
-      ...users[usuarioIndex],
-      nombre,
-      email,
-      password: nuevoPassword || users[usuarioIndex].password, // Actualizar la contraseña solo si es nueva
-    };
-
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('userName', nombre);
-    localStorage.setItem('userRut', rut);
-    localStorage.setItem('userEmail', email);
-
-    alert('Datos de ingreso actualizados correctamente.');
-    setModoEdicion(false);
-    setModoEdicionPassword(false);
+  
+    try {
+      const response = await fetch('http://localhost:5000/perfil', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({
+          nombre,
+          email,
+          password: nuevoPassword || undefined, // Enviar solo la nueva contraseña si existe
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar datos de ingreso');
+      }
+  
+      const data = await response.json();
+      console.log(data); // Solo para mostrar la respuesta
+      alert('Datos de ingreso actualizados correctamente.');
+  
+      // Actualizar en localStorage para mantener el formato
+      localStorage.setItem('userName', nombre);
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userRut', rut);
+  
+      setModoEdicion(false);
+      setModoEdicionPassword(false);
+    } catch (error) {
+      console.error('Error al guardar los datos de ingreso:', error);
+      alert('Error al actualizar los datos de ingreso.');
+    }
   };
-
-  const handleGuardarPerfilPersonal = () => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userEmail = localStorage.getItem('userEmail');
-    const usuarioIndex = users.findIndex(u => u.email === userEmail);
-
-    if (usuarioIndex === -1) {
-      alert('Usuario no encontrado');
+  
+  const handleGuardarPerfilPersonal = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert('Token de autenticación no encontrado.');
       return;
     }
-
-    users[usuarioIndex] = {
-      ...users[usuarioIndex],
-      rut,
-      patente,
-      direccion,
-      fechaNacimiento,
-      afp,
-      previsionSalud,
-    };
-
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Perfil personal actualizado correctamente.');
+  
+    try {
+      const response = await fetch('http://localhost:5000/perfil', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify({
+          rut,
+          patente,
+          direccion,
+          fechaNacimiento,
+          afp,
+          previsionSalud,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar perfil personal');
+      }
+  
+      const data = await response.json();
+      console.log(data); // Solo para mostrar la respuesta
+      alert('Perfil personal actualizado correctamente.');
+  
+      // Mantener el formato en localStorage
+      localStorage.setItem('userRut', rut);
+      localStorage.setItem('userPatente', patente);
+      localStorage.setItem('userDireccion', direccion);
+      localStorage.setItem('userFechaNacimiento', fechaNacimiento);
+      localStorage.setItem('userAfp', afp);
+      localStorage.setItem('userPrevisionSalud', previsionSalud);
+    } catch (error) {
+      console.error('Error al guardar el perfil personal:', error);
+      alert('Error al actualizar el perfil personal.');
+    }
   };
 
   return (
@@ -139,14 +183,14 @@ function Perfil() {
           <label htmlFor="passwordActual">Contraseña actual:</label>
           {modoEdicionPassword ? (
             <input
-              type="text" // Mostrar la contraseña en texto claro solo cuando estamos en modo de edición
+              type="text"
               id="passwordActual"
               value={passwordActual}
               onChange={(e) => setPasswordActual(e.target.value)}
             />
           ) : (
             <input
-              type="password" // Mostrar la contraseña como puntos en el modo de visualización
+              type="password"
               id="passwordActual"
               value={password}
               readOnly
@@ -254,7 +298,6 @@ function Perfil() {
 
         <button onClick={handleGuardarPerfilPersonal}>Guardar Perfil Personal</button>
       </section>
-
     </div>
   );
 }

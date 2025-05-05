@@ -1,32 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { crearUsuario } from '../services/userService';
+import { signup } from '../services/userService';
 
-// Función para formatear el RUT
 function formatearRut(rut) {
-  rut = rut.replace(/^0+/, ''); // Quitar ceros iniciales
-  rut = rut.replace(/\D/g, ''); // Quitar todo lo que no sea número
+  rut = rut.replace(/^0+/, '').replace(/\D/g, '');  // Elimina ceros iniciales y caracteres no numéricos
+  
+  if (rut.length <= 1) return rut;  // Si solo tiene un dígito, retornamos el rut tal cual
 
-  if (rut.length > 1) {
-    const cuerpo = rut.slice(0, -1);
-    const dv = rut.slice(-1);
+  const cuerpo = rut.slice(0, -1);
+  const dv = rut.slice(-1);
 
-    let cuerpoFormateado = '';
-    let contador = 0;
+  const cuerpoFormateado = cuerpo.replace(/(\d{1,3})(?=(\d{3})+(?!\d))/g, '$1.');
 
-    for (let i = cuerpo.length - 1; i >= 0; i--) {
-      cuerpoFormateado = cuerpo[i] + cuerpoFormateado;
-      contador++;
-      if (contador % 3 === 0 && i !== 0) {
-        cuerpoFormateado = '.' + cuerpoFormateado;
-      }
-    }
-
-    return cuerpoFormateado + '-' + dv;
-  }
-
-  return rut;
+  return `${cuerpoFormateado}-${dv}`;
 }
+
 
 function Registro({ setIsAuthenticated, setUserEmail }) {
   const [nombre, setNombre] = useState('');
@@ -49,14 +37,14 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-
+    
     const emailFormateado = email.trim().toLowerCase();
-
+    
     if (
       !emailFormateado.endsWith('@conductord.cl') &&
       !emailFormateado.endsWith('@conductorav.cl') &&
@@ -65,17 +53,13 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
       setEmailError('El correo debe pertenecer a uno de los siguientes dominios: @conductord.cl, @conductorav.cl, @adminlog.cl');
       return;
     }
-
+    
     try {
-      const response = await crearUsuario({
-        nombre,
-        rut,
-        email: emailFormateado,
-        password
-      });
-
+      const response = await signup({ nombre, rut, email: emailFormateado, password });
       const { token, user } = response.data;
-
+    
+      console.log('Usuario registrado con éxito:', user);
+    
       localStorage.setItem('authToken', token);
       localStorage.setItem('userEmail', user.email);
       localStorage.setItem('userNombre', user.nombre);
@@ -83,11 +67,12 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
       setUserEmail(user.email);
       navigate('/dashboard/perfil');
     } catch (err) {
-      console.error(err);
+      console.error('Error en el registro:', err);
       const mensaje = err.response?.data?.message || 'Error al registrar usuario';
-      alert(mensaje);
+      alert(mensaje);  // Muestra el error al usuario
     }
   };
+  
 
   if (accesoRestringido) {
     return (
@@ -168,4 +153,4 @@ function Registro({ setIsAuthenticated, setUserEmail }) {
   );
 }
 
-export default Registro;
+export default Registro;    // src/services/userService.js

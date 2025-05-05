@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUsuario } from '../services/userService'; // Usaremos esta función
+import { loginUsuario } from '../services/userService';
 
 function Login({ setIsAuthenticated, setUserEmail }) {
   const [email, setEmail] = useState('');
@@ -19,21 +19,21 @@ function Login({ setIsAuthenticated, setUserEmail }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (!/\S+@\S+\.\S+/.test(email)) {
       alert('Por favor ingresa un correo válido');
       return;
     }
   
     try {
-      const response = await loginUsuario({ email, password }); // Usamos axios
-
-      const { token, user } = response.data;
-
+      // Como loginUsuario ya devuelve response.data directamente,
+      // no necesitas usar .data aquí.
+      const { token, user } = await loginUsuario({ email, password });
+  
       localStorage.setItem('authToken', token);
       localStorage.setItem('userNombre', user.nombre);
       localStorage.setItem('userEmail', user.email);
-
+  
       setIsAuthenticated(true);
       setUserEmail(user.email);
       navigate('/dashboard/perfil');
@@ -43,7 +43,6 @@ function Login({ setIsAuthenticated, setUserEmail }) {
       alert(mensaje);
     }
   };
-  
   return (
     <div className="login-container">
       {mostrarCuadro && (
@@ -82,6 +81,6 @@ function Login({ setIsAuthenticated, setUserEmail }) {
       </form>
     </div>
   );
-} 
+}
 
-export default Login; 
+export default Login;

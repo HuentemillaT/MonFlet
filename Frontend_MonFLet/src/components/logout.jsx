@@ -1,24 +1,24 @@
-// components/Logout.jsx
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Logout({ setIsAuthenticated }) {
+function Logout({ setIsAuthenticated, setUserEmail }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Elimina sólo los datos de sesión relevantes
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userNombre');
+    localStorage.removeItem('userEmail');
 
-     // Actualizar el estado global de autenticación
+    // Actualiza los estados de autenticación y usuario
     setIsAuthenticated(false);
+    setUserEmail('');
 
-    setTimeout(() => {
-      // Redirigir al inicio
-      navigate('/dashboard/inicio');
-    }, 300); // 300 milisegundos de delay
-  }, [navigate, setIsAuthenticated]);
+    // Redirige al inicio o donde desees
+    navigate('/dashboard/inicio');
+  }, [navigate, setIsAuthenticated, setUserEmail]);
 
-  return null; // No renderiza nada visible
+  return null;
 }
 
 export default Logout;
-
-

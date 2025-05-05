@@ -371,7 +371,7 @@ p {
 
   /* Aquí ponemos flex */
   display: flex;
-  gap: 20px; /* Espacio entre secciones */
+  gap: 30px; /* Espacio entre secciones */
 }
 
 .seccion {
@@ -396,7 +396,7 @@ p {
 }
 
 .seccion input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;

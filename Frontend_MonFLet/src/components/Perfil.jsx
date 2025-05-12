@@ -348,11 +348,13 @@ const handleCancelarPerfilPersonal = () => {
         </div>
         {modoEdicionPerfil ? (
           <>
-            <button onClick={handleGuardarPerfilPersonal}>Guardar Cambios</button>
+            <button onClick={() => setModoEdicionPerfil(true)}>Editar Perfil</button>
             <button onClick={handleCancelarPerfilPersonal}>Cancelar</button>
           </>
         ) : (
-          <button onClick={() => setModoEdicionPerfil(true)}>Editar Perfil</button>
+
+            <button onClick={handleGuardarPerfilPersonal}>Guardar Cambios</button>
+
         )}
       </section>
     </div>

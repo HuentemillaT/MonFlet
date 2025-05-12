@@ -8,7 +8,8 @@ function Perfil() {
   const [passwordActual, setPasswordActual] = useState('');
   const [nuevoPassword, setNuevoPassword] = useState('');
   const [confirmarPassword, setConfirmarPassword] = useState('');
-  const [modoEdicion, setModoEdicion] = useState(false);
+  const [modoEdicionIngreso, setModoEdicionIngreso] = useState(false);
+  const [modoEdicionPerfil, setModoEdicionPerfil] = useState(false);
   const [modoEdicionPassword, setModoEdicionPassword] = useState(false);
 
   // Datos adicionales del perfil
@@ -20,28 +21,48 @@ function Perfil() {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-  
-    if (token) {
-      obtenerPerfil(token)  // Llama a la API para obtener el perfil usando el token
-        .then((res) => {
-          const usuario = res.user;
-          setNombre(usuario.nombre);
-          setEmail(usuario.email);
-          setRut(usuario.rut || '');
-          setPatente(usuario.patente || '');
-          setDireccion(usuario.direccion || '');
-          setFechaNacimiento(usuario.fechaNacimiento || '');
-          setAfp(usuario.afp || '');
-          setPrevisionSalud(usuario.previsionSalud || '');
-          setPassword('');  // No cargues la contraseña desde el backend por seguridad
-        })
-        .catch((err) => {
-          console.error('Error al obtener perfil:', err);
-          alert('Error al cargar perfil');
-        });
-    }
-  }, []);
+  const token = localStorage.getItem('authToken');
+  const datosGuardados = JSON.parse(localStorage.getItem('perfilUsuario'));
+
+  if (datosGuardados) {
+    setNombre(datosGuardados.nombre || '');
+    setEmail(datosGuardados.email || '');
+    setRut(datosGuardados.rut || '');
+    setPatente(datosGuardados.patente || '');
+    setDireccion(datosGuardados.direccion || '');
+    setFechaNacimiento(datosGuardados.fechaNacimiento || '');
+    setAfp(datosGuardados.afp || '');
+    setPrevisionSalud(datosGuardados.previsionSalud || '');
+    setPassword('********');
+  }
+
+  if (token) {
+    obtenerPerfil(token)
+      .then((res) => {
+        const usuario = res.user;
+        
+        // Guardar los datos actualizados en localStorage
+        localStorage.setItem('perfilUsuario', JSON.stringify(usuario));
+
+        // Actualizar el estado con los datos obtenidos del backend
+        setNombre(usuario.nombre || '');
+        setEmail(usuario.email || '');
+        setRut(usuario.rut || '');
+        setPatente(usuario.patente || '');
+        setDireccion(usuario.direccion || '');
+        setFechaNacimiento(usuario.fechaNacimiento || '');
+        setAfp(usuario.afp || '');
+        setPrevisionSalud(usuario.previsionSalud || '');
+        setPassword('********');
+      })
+      .catch((err) => {
+        console.error('Error al obtener perfil:', err);
+        alert('Error al cargar perfil');
+      });
+  }
+}, []);
+
+
 
   const handleGuardarDatosIngreso = async () => {
     const token = localStorage.getItem('authToken');
@@ -82,11 +103,11 @@ function Perfil() {
       alert('Datos de ingreso actualizados correctamente.');
   
       // Actualizar en localStorage para mantener el formato
-      localStorage.setItem('userName', nombre);
+      localStorage.setItem('userNombre', nombre);
       localStorage.setItem('userEmail', email);
       localStorage.setItem('userRut', rut);
   
-      setModoEdicion(false);
+      setModoEdicionIngreso(false);
       setModoEdicionPassword(false);
     } catch (error) {
       console.error('Error al guardar los datos de ingreso:', error);
@@ -94,50 +115,80 @@ function Perfil() {
     }
   };
   
-  const handleGuardarPerfilPersonal = async () => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      alert('Token de autenticación no encontrado.');
-      return;
+ const handleGuardarPerfilPersonal = async () => {
+  const token = localStorage.getItem('authToken');
+  console.log('Token:', token);
+  if (!token) {
+    alert('Token de autenticación no encontrado.');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:5000/perfil', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+      body: JSON.stringify({
+        patente,
+        direccion,
+        fechaNacimiento,
+        afp,
+        previsionSalud,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Detalles del error:', errorText);
+      throw new Error('Error al actualizar perfil personal');
     }
-  
-    try {
-      const response = await fetch('http://localhost:5000/perfil', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        body: JSON.stringify({
-          rut,
-          patente,
-          direccion,
-          fechaNacimiento,
-          afp,
-          previsionSalud,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al actualizar perfil personal');
-      }
-  
-      const data = await response.json();
-      console.log(data); // Solo para mostrar la respuesta
-      alert('Perfil personal actualizado correctamente.');
-  
-      // Mantener el formato en localStorage
-      localStorage.setItem('userRut', rut);
-      localStorage.setItem('userPatente', patente);
-      localStorage.setItem('userDireccion', direccion);
-      localStorage.setItem('userFechaNacimiento', fechaNacimiento);
-      localStorage.setItem('userAfp', afp);
-      localStorage.setItem('userPrevisionSalud', previsionSalud);
+
+    const data = await response.json();
+    console.log('Respuesta del servidor:', data);
+    alert('Perfil personal actualizado correctamente.');
+
+    // Actualizar los valores en el estado directamente
+    setPatente(patente);
+    setDireccion(direccion);
+    setFechaNacimiento(fechaNacimiento);
+    setAfp(afp);
+    setPrevisionSalud(previsionSalud);
+
+    // Actualizar los datos en localStorage
+    localStorage.setItem('userPatente', patente);
+    localStorage.setItem('userDireccion', direccion);
+    localStorage.setItem('userFechaNacimiento', fechaNacimiento);
+    localStorage.setItem('userAfp', afp);
+    localStorage.setItem('userPrevisionSalud', previsionSalud);
+
+    // Desactivar el modo edición
+    setModoEdicionPerfil(false);
+
     } catch (error) {
       console.error('Error al guardar el perfil personal:', error);
       alert('Error al actualizar el perfil personal.');
     }
-  };
+    
+};
+const perfilActualizado = {
+  nombre,
+  email,
+  rut,
+  patente,
+  direccion,
+  fechaNacimiento,
+  afp,
+  previsionSalud,
+};
+
+localStorage.setItem('perfilUsuario', JSON.stringify(perfilActualizado));
+
+const handleCancelarPerfilPersonal = () => {
+  setModoEdicionPerfil(false);
+};
+
 
   return (
     <div className="perfil-container">
@@ -152,7 +203,7 @@ function Perfil() {
             id="nombre"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionIngreso}
           />
         </div>
 
@@ -174,7 +225,7 @@ function Perfil() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionIngreso}
           />
         </div>
 
@@ -222,11 +273,11 @@ function Perfil() {
           </>
         )}
 
-        <button onClick={() => setModoEdicion(!modoEdicion)}>
-          {modoEdicion ? 'Cancelar' : 'Editar Datos'}
+        <button onClick={() => setModoEdicionIngreso(!modoEdicionIngreso)}>
+          {modoEdicionIngreso ? 'Cancelar' : 'Editar Datos'}
         </button>
 
-        {modoEdicion && (
+        {modoEdicionIngreso && (
           <>
             <button onClick={() => setModoEdicionPassword(!modoEdicionPassword)}>
               {modoEdicionPassword ? 'Cancelar cambio de contraseña' : 'Cambiar Contraseña'}
@@ -248,7 +299,7 @@ function Perfil() {
             id="patente"
             value={patente}
             onChange={(e) => setPatente(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionPerfil}
           />
         </div>
 
@@ -259,7 +310,7 @@ function Perfil() {
             id="direccion"
             value={direccion}
             onChange={(e) => setDireccion(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionPerfil}
           />
         </div>
 
@@ -270,7 +321,7 @@ function Perfil() {
             id="fechaNacimiento"
             value={fechaNacimiento}
             onChange={(e) => setFechaNacimiento(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionPerfil}
           />
         </div>
 
@@ -281,7 +332,7 @@ function Perfil() {
             id="afp"
             value={afp}
             onChange={(e) => setAfp(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionPerfil}
           />
         </div>
 
@@ -292,11 +343,17 @@ function Perfil() {
             id="previsionSalud"
             value={previsionSalud}
             onChange={(e) => setPrevisionSalud(e.target.value)}
-            disabled={!modoEdicion}
+            disabled={!modoEdicionPerfil}
           />
         </div>
-
-        <button onClick={handleGuardarPerfilPersonal}>Guardar Perfil Personal</button>
+        {modoEdicionPerfil ? (
+          <>
+            <button onClick={handleGuardarPerfilPersonal}>Guardar Cambios</button>
+            <button onClick={handleCancelarPerfilPersonal}>Cancelar</button>
+          </>
+        ) : (
+          <button onClick={() => setModoEdicionPerfil(true)}>Editar Perfil</button>
+        )}
       </section>
     </div>
   );

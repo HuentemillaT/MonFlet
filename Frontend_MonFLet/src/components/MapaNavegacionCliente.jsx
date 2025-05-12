@@ -56,7 +56,7 @@ function MapaNavegacionCliente() {
             position={{ lat: cliente.lat, lng: cliente.lng }}
             label={{ text: cliente.nombre, fontWeight: 'bold' }}
             icon={{
-              url: '/icons/cliente.png', // Asegúrate de que este ícono esté en la carpeta correcta
+              url: '/icons/logo1_22.png', // Ruta relativa desde /public
               scaledSize: new window.google.maps.Size(40, 40),
               labelOrigin: new window.google.maps.Point(20, -10),
             }}

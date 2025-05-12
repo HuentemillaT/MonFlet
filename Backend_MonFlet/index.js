@@ -1,9 +1,15 @@
+// index.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();  // Cargar variables de entorno desde .env
+
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const router = express.Router();
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || 'secreto';  // Usa una variable de entorno para la clave
@@ -35,29 +41,9 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/monflet')
   .catch((error) => console.error('Error al conectar a MongoDB:', error));
 
 // Esquema y modelo de usuario
-const userSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  rut: { type: String },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-});
-
-const User = mongoose.model('User', userSchema);
-
+const User = require('./models/user');
 // Middleware para autenticar JWT
-const authenticate = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ message: 'Token requerido' });
-
-  try {
-    const decoded = jwt.verify(authHeader, JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-password');
-    if (!req.user) return res.status(404).json({ message: 'Usuario no encontrado' });
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Token inválido', error: error.message });
-  }
-};
+const authenticate = require('./middleware/auth');
 
 // Función para crear JWT
 const createToken = (user) => {
@@ -123,24 +109,78 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Obtener perfil del usuario autenticado
-app.get('/perfil', authenticate, (req, res) => {
-  res.status(200).json({ user: req.user });
+// Importa rutas de perfil
+const perfilRoutes = require('./routes/perfil');
+app.use('/perfil', perfilRoutes);
+
+// Cargar archivos
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Siempre usar '/uploads/documentos' como directorio
+    const dir = path.join(__dirname, 'uploads', 'documentos');
+    console.log('Directorio de carga:', dir);
+    
+    // Crear el directorio si no existe
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch (err) {
+      console.error('Error al crear directorio:', err);
+    }
+    
+    // Guardar archivo en el directorio especificado
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    // Nombrar el archivo con un timestamp para evitar conflictos
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
 });
 
-// Actualizar perfil del usuario autenticado
-app.put('/perfil', authenticate, async (req, res) => {
-  const { nombre, rut } = req.body;
+
+const upload = multer({ storage });
+
+const Documento = require('./models/Documento'); // Asegúrate de tener este modelo
+
+// Subir documento
+app.post('/subir-documento', authenticate, upload.single('archivo'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No se ha recibido ningún archivo' });
+  }
 
   try {
-    req.user.nombre = nombre || req.user.nombre;
-    req.user.rut = rut || req.user.rut;
-    await req.user.save();
-    res.status(200).json({ message: 'Perfil actualizado', user: req.user });
+    const nuevoDocumento = new Documento({
+      tipo: req.body.tipo, // Asegúrate de mandar esto desde el frontend
+      usuario: req.user.id, // Asumiendo que `authenticate` agrega el usuario al req
+      nombreArchivo: req.file.originalname,
+      rutaArchivo: req.file.path,
+      fechaSubida: new Date()
+    });
+
+    await nuevoDocumento.save();
+
+    res.status(201).json({
+      message: 'Documento subido y guardado en la base de datos',
+      file: {
+        nombre: req.file.originalname,
+        path: req.file.path,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar perfil', error: error.message });
+    console.error('Error al guardar en MongoDB:', error);
+    res.status(500).json({ message: 'Error al guardar el documento en la base de datos' });
   }
 });
+app.get('/documentos', authenticate, async (req, res) => {
+  try {
+    const documentos = await Documento.find({ usuario: req.user.id }).sort({ fechaSubida: -1 });
+    res.status(200).json(documentos);
+  } catch (error) {
+    console.error('Error al obtener documentos:', error);
+    res.status(500).json({ message: 'Error al obtener documentos' });
+  }
+});
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Iniciar servidor
 const port = process.env.PORT || 5000;

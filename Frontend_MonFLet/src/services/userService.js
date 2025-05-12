@@ -20,3 +20,21 @@ export const obtenerPerfil = async (token) => {
   });
   return response.data;
 };
+
+// Actualizar perfil
+export const actualizarPerfil = async (perfilData, token) => {
+  const response = await axios.put(`${API_URL}/perfil`, perfilData, {
+    headers: { 'Authorization': token },
+  });
+  return response.data;
+};
+
+//Subir archivos (usuarios conductor)
+export const subirDocumento = async (formData, token) => {
+  return axios.post(`${API_URL}/subir-documento`, formData, {
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+};

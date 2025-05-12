@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { subirDocumento } from '../services/userService';
 
 function Documentos() {
   const [documentosMerma, setDocumentosMerma] = useState([]);
@@ -31,43 +32,69 @@ function Documentos() {
     localStorage.setItem('documentosCerradas', JSON.stringify(documentosCerradas));
   }, [documentosMerma, documentosFacturas, documentosCerradas]);
 
-  const handleUpload = (e, tipo) => {
-    const archivos = Array.from(e.target.files);
-    const nuevosDocs = archivos.map((file) => ({
-      nombre: file.name,
-      url: URL.createObjectURL(file),
-    }));
-
+  const handleEnviar = async (tipo) => {
+    const token = localStorage.getItem('authToken');
+  
+    let documentos = [];
+    let setDocumentos;
+    let inputRef;
+  
     if (tipo === 'merma') {
-      setDocumentosMerma((prev) => [...prev, ...nuevosDocs]);
+      documentos = documentosMerma;
+      setDocumentos = setDocumentosMerma;
+      inputRef = inputMermaRef;
     } else if (tipo === 'facturas') {
-      setDocumentosFacturas((prev) => [...prev, ...nuevosDocs]);
+      documentos = documentosFacturas;
+      setDocumentos = setDocumentosFacturas;
+      inputRef = inputFacturasRef;
     } else if (tipo === 'cerradas') {
-      setDocumentosCerradas((prev) => [...prev, ...nuevosDocs]);
-    }
-  };
-
-  const handleEnviar = (tipo) => {
-    if (tipo === 'merma') {
-      setMensaje('Documentos de merma cargados correctamente');
-      setDocumentosMerma([]);
-      inputMermaRef.current.value = null;
-    } else if (tipo === 'facturas') {
-      setMensaje('Documentos de facturas cargados correctamente');
-      setDocumentosFacturas([]);
-      inputFacturasRef.current.value = null;
-    } else if (tipo === 'cerradas') {
-      setMensaje('Documentos de facturas cerradas cargados correctamente');
-      setDocumentosCerradas([]);
-      inputCerradasRef.current.value = null;
+      documentos = documentosCerradas;
+      setDocumentos = setDocumentosCerradas;
+      inputRef = inputCerradasRef;
     }
 
+    try {
+      // Subir cada documento
+      for (const doc of documentos) {
+        const formData = new FormData();
+        formData.append('archivo', doc.file);  // Usamos el archivo real
+        formData.append('tipo', tipo);
+        console.log('Subiendo archivo:', formData);  // Asegúrate de ver el archivo que estás enviando
+
+        await subirDocumento(formData, token); // Uso del servicio centralizado
+      }
+  
+      setMensaje(`Documentos de ${tipo} cargados correctamente`);
+      setDocumentos([]);
+      if (inputRef.current) inputRef.current.value = null;
+    } catch (error) {
+      setMensaje('Error al subir documentos: ' + (error.response?.data?.message || error.message));
+    }
+  
     setMostrarToast(true);
     setTimeout(() => {
       setMostrarToast(false);
     }, 3000);
   };
 
+  const handleUpload = (event, tipo) => {
+    const archivos = Array.from(event.target.files);
+    const nuevosDocs = archivos.map((file) => ({
+      nombre: file.name,
+      url: URL.createObjectURL(file),
+      file,  // Guardamos el archivo real
+    }));
+    
+  
+    if (tipo === 'merma') {
+      setDocumentosMerma([...documentosMerma, ...nuevosDocs]);
+    } else if (tipo === 'facturas') {
+      setDocumentosFacturas([...documentosFacturas, ...nuevosDocs]);
+    } else if (tipo === 'cerradas') {
+      setDocumentosCerradas([...documentosCerradas, ...nuevosDocs]);
+    }
+  };
+  
   return (
     <div className="fondo">
       {mostrarToast && (
